@@ -4,6 +4,21 @@ from tkinter import *
 testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+BBB2     *  	BBB2", "if(cresult 	>10):", "print(“TinyPie”)"]
 
 root = Tk()
+root.title("User GUI")
+
+userInput = Entry(root, width=50, borderwidth= 5, font = ('Arial', 24) )
+userInput.pack()
+userInput.insert(0, "Enter your Name: ")
+
+def myClick():
+  hello = "Hello " + userInput.get()
+  myLabel = Label(root, text = hello)
+  myLabel.pack()
+
+myButton = Button(root, text = "Generate Tokents", command = myClick, fg =  "blue", bg = "#000000")
+myButton.pack()
+
+root.mainloop()
 
 def keywords(string):
   #print("<KeyWord, " + string + ">")
@@ -117,5 +132,3 @@ def lexer(string):
   output += "]"
   print("Output <type, token> list: " + output)
   
-if __name__ == '__main__':
-  print("Hello World")
