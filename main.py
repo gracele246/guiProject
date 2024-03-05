@@ -10,13 +10,22 @@ root.geometry('1000x1000')
 firstString = Label(root, text = "Source Code Input:")
 firstString.pack()
 
+#clear button
 def clear():
-  my_text.delete(1.0, END)
-  
+  my_text.delete(1.0, 2.0)
+
+#next button
 def get_text():
-  my_label.config(text=my_text.get(1.0, END))
-my_text = Text(root , width=60, height=20, font = ("Arial", 16))
+  #for i in range(1, END):
+  my_label.config(text=my_text.get(1.0, 2.0))
+  clear()
+  
+  
+my_text = Text(root , width=60, height=20,font = ("Arial", 16))
 my_text.pack(pady=20)
+
+secondString = Label(root, text = "Current Processing Line:")
+secondString.pack() 
 
 button_frame = Frame(root)
 button_frame.pack()
@@ -24,7 +33,7 @@ button_frame.pack()
 clear_button = Button(button_frame, text = "Clear Screen", command = clear)
 clear_button.grid(row = 0, column=0)
 
-get_text_button = Button(button_frame, text = "Next", command = get_text)
+get_text_button = Button(button_frame, text = "Next Line", command = get_text)
 get_text_button.grid(row = 0, column=1, padx=20)
 
 my_label = Label(root, text='')
