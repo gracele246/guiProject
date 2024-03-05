@@ -5,23 +5,30 @@ testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+
 
 root = Tk()
 root.title("User GUI")
-root.geometry('500x500')
+root.geometry('1000x1000')
 
 firstString = Label(root, text = "Source Code Input:")
 firstString.pack()
-userInput = Entry(root, width=20, font = ('Arial', 24) )
-userInput.insert(0,"")
-userInput.pack()
 
+def clear():
+  my_text.delete(1.0, END)
+  
+def get_text():
+  my_label.config(text=my_text.get(1.0, END))
+my_text = Text(root , width=60, height=20, font = ("Arial", 16))
+my_text.pack(pady=20)
 
-def myClick():
-  hello = userInput.get()
-  myLabel = Label(root, text = hello)
-  userInput.delete(0, 'end')
-  myLabel.pack()
+button_frame = Frame(root)
+button_frame.pack()
 
-myButton = Button(root, text = "Generate Tokents", command = myClick, fg =  "blue", bg = "#000000")
-myButton.pack()
+clear_button = Button(button_frame, text = "Clear Screen", command = clear)
+clear_button.grid(row = 0, column=0)
+
+get_text_button = Button(button_frame, text = "Next", command = get_text)
+get_text_button.grid(row = 0, column=1, padx=20)
+
+my_label = Label(root, text='')
+my_label.pack(pady=20)
 
 root.mainloop()
 
