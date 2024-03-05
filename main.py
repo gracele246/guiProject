@@ -5,14 +5,19 @@ testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+
 
 root = Tk()
 root.title("User GUI")
+root.geometry('500x500')
 
-userInput = Entry(root, width=50, borderwidth= 5, font = ('Arial', 24) )
+firstString = Label(root, text = "Source Code Input:")
+firstString.pack()
+userInput = Entry(root, width=20, font = ('Arial', 24) )
+userInput.insert(0,"")
 userInput.pack()
-userInput.insert(0, "Enter your Name: ")
+
 
 def myClick():
-  hello = "Hello " + userInput.get()
+  hello = userInput.get()
   myLabel = Label(root, text = hello)
+  userInput.delete(0, 'end')
   myLabel.pack()
 
 myButton = Button(root, text = "Generate Tokents", command = myClick, fg =  "blue", bg = "#000000")
