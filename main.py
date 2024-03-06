@@ -12,6 +12,7 @@ firstString.pack()
 global line_number 
 line_number = 1
 global input_list 
+input_list = [""]
 global output
 output = ""
 #clear button
