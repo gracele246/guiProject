@@ -17,7 +17,7 @@ output = ""
 #clear button
 def clear():
   my_text.delete(1.0, END)
-  my_label.config(text = "")
+  my_text2.config(text = "")
   global line_number
   line_number = 1
   global output
@@ -39,10 +39,12 @@ def get_text():
     global output
     output += input_list[line_number-1] + "\n"
     line_number += 1
-    my_label.config(text = output)
+    my_text2.config(state = "normal")
+    my_text2.delete(1.0, END)
+    my_text2.insert('end',output)
+    my_text2.config(state = "disabled")
   
-  
-my_text = Text(root , width=60, height=20,font = ("Arial", 16))
+my_text = Text(root , width=60, height=15,font = ("Arial", 16))
 my_text.pack(pady=20)
 
 secondString = Label(root, text = "Current Processing Line: " + str(line_number))
@@ -60,8 +62,12 @@ start_button.grid(row = 0, column=1, padx=20)
 get_text_button = Button(button_frame, text = "Next Line", command = get_text)
 get_text_button.grid(row = 0, column=2, padx=20)
 
-my_label = Label(root, text='')
-my_label.pack(pady=20)
+thirdString = Label(root, text = "Source Code Output:")
+thirdString.pack(pady = 40)
+
+my_text2 = Text(root , width=60, height=15,font = ("Arial", 16))
+my_text2.pack()
+my_text2.config(state = "disabled")
 
 root.mainloop()
 
