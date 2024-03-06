@@ -9,25 +9,43 @@ root.geometry('1000x1000')
 
 firstString = Label(root, text = "Source Code Input:")
 firstString.pack()
-
+global line_number 
+line_number = 1
+global input_list 
+global output
+output = ""
 #clear button
 def clear():
-  my_text2.delete(1.0, END)
+  my_text.delete(1.0, END)
+  my_label.config(text = "")
+  global line_number
+  line_number = 1
+  global output
+  output = ""
+  global input_list
+  input_list = [""]
+  secondString.configure(text = "Current Processing Line: " + str(line_number))
 
+def start():
+  global input_list
+  input_list = my_text.get(1.0, END).splitlines()
 #next button
 def get_text():
-  #for i in range(1, END):
-  my_text2.insert(INSERT, my_text.get(1.0, 2.0))
-  #my_text2.insert(my_label.config(text=my_text.get(1.0, 2.0)))
+  global line_number
+  global input_list
+  if line_number < len(input_list)+1 and input_list != [""]:
+    secondString.configure(text = "Current Processing Line: " + str(line_number))
+    secondString.pack()
+    global output
+    output += input_list[line_number-1] + "\n"
+    line_number += 1
+    my_label.config(text = output)
   
   
-my_text = Text(root , width=30, height=20,font = ("Arial", 16))
-my_text.pack(padx=10)
+my_text = Text(root , width=60, height=20,font = ("Arial", 16))
+my_text.pack(pady=20)
 
-my_text2 = Text(root , width=30, height=20,font = ("Arial", 16))
-my_text2.pack(pady=20)
-
-secondString = Label(root, text = "Current Processing Line:")
+secondString = Label(root, text = "Current Processing Line: " + str(line_number))
 secondString.pack() 
 
 button_frame = Frame(root)
@@ -36,8 +54,11 @@ button_frame.pack()
 clear_button = Button(button_frame, text = "Clear Screen", command = clear)
 clear_button.grid(row = 0, column=0)
 
+start_button = Button(button_frame, text = "Start", command = start)
+start_button.grid(row = 0, column=1, padx=20)
+
 get_text_button = Button(button_frame, text = "Next Line", command = get_text)
-get_text_button.grid(row = 0, column=1, padx=20)
+get_text_button.grid(row = 0, column=2, padx=20)
 
 my_label = Label(root, text='')
 my_label.pack(pady=20)
