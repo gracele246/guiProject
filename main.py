@@ -52,6 +52,10 @@ def get_text():
     my_text2.insert('end',output)
     my_text2.config(state = "disabled")
 
+#quit button
+def quit():
+  root.destroy()
+
 #formatting
 my_text = Text(root , width=60, height=15,font = ("Arial", 16))
 my_text.pack(pady=20)
@@ -70,6 +74,9 @@ start_button.grid(row = 0, column=1, padx=20)
 
 get_text_button = Button(button_frame, text = "Next Line", command = get_text)
 get_text_button.grid(row = 0, column=2, padx=20)
+
+quit_button = Button(button_frame, text = "Quit", command = quit)
+quit_button.grid(row = 0, column = 3, padx = 20)
 
 thirdString = Label(root, text = "Source Code Output:")
 thirdString.pack(pady = 40)
