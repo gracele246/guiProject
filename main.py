@@ -12,17 +12,20 @@ firstString.pack()
 
 #clear button
 def clear():
-  my_text.delete(1.0, 2.0)
+  my_text2.delete(1.0, END)
 
 #next button
 def get_text():
   #for i in range(1, END):
-  my_label.config(text=my_text.get(1.0, 2.0))
-  clear()
+  my_text2.insert(INSERT, my_text.get(1.0, 2.0))
+  #my_text2.insert(my_label.config(text=my_text.get(1.0, 2.0)))
   
   
-my_text = Text(root , width=60, height=20,font = ("Arial", 16))
-my_text.pack(pady=20)
+my_text = Text(root , width=30, height=20,font = ("Arial", 16))
+my_text.pack(padx=10)
+
+my_text2 = Text(root , width=30, height=20,font = ("Arial", 16))
+my_text2.pack(pady=20)
 
 secondString = Label(root, text = "Current Processing Line:")
 secondString.pack() 
