@@ -21,7 +21,9 @@ output = ""
 #clear button
 def clear():
   my_text.delete(1.0, END)
-  my_text2.config(text = "")
+  my_text2.config(state = "normal")
+  my_text2.delete(1.0, END)
+  my_text2.config(state = "disabled")
   global line_number
   line_number = 1
   global output
