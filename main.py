@@ -1,8 +1,11 @@
+#Team: Brandon Nguyen, Grace Le, Jack Walker
+
 import re
 from tkinter import *
 
 testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+BBB2     *  	BBB2", "if(cresult 	>10):", "print(“TinyPie”)"]
 
+#Creating the GUI
 root = Tk()
 root.title("User GUI")
 root.geometry('1000x1000')
@@ -27,9 +30,11 @@ def clear():
   input_list = [""]
   secondString.configure(text = "Current Processing Line: " + str(line_number))
 
+#splits the lines in the textbox
 def start():
   global input_list
   input_list = my_text.get(1.0, END).splitlines()
+  
 #next button
 def get_text():
   global line_number
@@ -44,7 +49,8 @@ def get_text():
     my_text2.delete(1.0, END)
     my_text2.insert('end',output)
     my_text2.config(state = "disabled")
-  
+
+#formatting
 my_text = Text(root , width=60, height=15,font = ("Arial", 16))
 my_text.pack(pady=20)
 
