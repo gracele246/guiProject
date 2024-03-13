@@ -5,6 +5,122 @@ from tkinter import *
 
 testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+BBB2     *  	BBB2", "if(cresult 	>10):", "print(“TinyPie”)"]
 
+def keywords(input_str):
+  #print("<KeyWord, " + input_str + ">")
+  return "<KeyWord, " + input_str + ">"
+
+def literals(input_str):
+  #print("<lit, " + input_str + ">")
+  return "<lit, " + input_str + ">"
+
+def operators(input_str):
+  #print("<lit, " + input_str + ">")
+  return "<op, " + input_str + ">"
+
+def seperators(input_str):
+  #print("<sep, " + input_str + ">")
+  return "<sep, " + input_str + ">"
+
+def identifiers(input_str):
+  #print("<iden, " + input_str + ">")
+  return "<iden, " + input_str + ">"
+  
+def lexer(input_str): 
+  #keywords
+  prev_keyword = ""
+  input_str = input_str.strip()
+  print("Test input string: " + input_str)
+  temp = ""
+  output = "["
+  p = re.search("^if|^else|^int|^float|^string|^double",input_str)
+  if(p):
+    temp = keywords(p.group())
+    input_str = input_str.replace(p.group(),'',1)
+    input_str = input_str.strip()
+    output += temp + ", "
+    print("Check")
+    prev_keyword = p.group()
+  if(prev_keyword == "if"):
+    while input_str != "":
+      #seperators
+      p = re.search("^\(|^\)|^{|^}|^:|^“|^”|^;$",input_str)
+      if(p):
+        temp = seperators(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str.strip()
+        output += temp + ", "
+      #Identifiers 
+      p = re.search("^[A-Za-z]+\d+|^[A-Za-z]+",input_str)
+      if(p):
+        temp = identifiers(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
+      #operators
+      p = re.search("^[=+>*-]",input_str)
+      if(p):
+        temp = operators(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
+      #literals
+      p = re.search("^\d+\.\d+|^\d+|^[A-za-z]+",input_str)
+      if(p):
+        temp = literals(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
+  else:
+    while input_str != "":
+      #Identifiers 
+      p = re.search("^[A-Za-z]+\d+|^[A-Za-z]+",input_str)
+      if(p):
+        temp = identifiers(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
+      #operators
+      p = re.search("^[=+>*-]",input_str)
+      if(p):
+        temp = operators(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
+    #Identifiers 
+      p = re.search("^[A-Za-z]+\d+|^[A-Za-z]+",input_str)
+      if(p):
+        temp = identifiers(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
+        
+      #seperators
+      p = re.search("^\(|^\)|^{|^}|^:|^“|^”|^;$",input_str)
+      if(p):
+        temp = seperators(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str.strip()
+        output += temp + ", "
+      #literals
+      p = re.search("^\d+\.\d+|^\d+|^[A-za-z]+",input_str)
+      if(p):
+        temp = literals(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
+      #p = re.search("^[A-Za-z]+|^[A-Za-z]+\d+",temp)
+      #if(p):
+        #identifiers(p.group())
+        #temp = temp.replace(p.group(),'')
+      
+  
+  output = output[:-2]
+  output += "]"
+  print("Output <type, token> list: " + output)
+  return output
+  
+
+
 #Creating the GUI
 root = Tk()
 root.title("User GUI")
@@ -45,7 +161,9 @@ def get_text():
     secondString.configure(text = "Current Processing Line: " + str(line_number))
     secondString.pack()
     global output
-    output += input_list[line_number-1] + "\n"
+    lexer_input = input_list[line_number-1]
+    output += lexer(lexer_input) + "\n"
+    #output += input_list[line_number-1] + "\n"
     line_number += 1
     my_text2.config(state = "normal")
     my_text2.delete(1.0, END)
@@ -86,116 +204,3 @@ my_text2.pack()
 my_text2.config(state = "disabled")
 
 root.mainloop()
-
-def keywords(string):
-  #print("<KeyWord, " + string + ">")
-  return "<KeyWord, " + string + ">"
-
-def literals(string):
-  #print("<lit, " + string + ">")
-  return "<lit, " + string + ">"
-
-def operators(string):
-  #print("<lit, " + string + ">")
-  return "<op, " + string + ">"
-
-def seperators(string):
-  #print("<sep, " + string + ">")
-  return "<sep, " + string + ">"
-
-def identifiers(string):
-  #print("<iden, " + string + ">")
-  return "<iden, " + string + ">"
-  
-def lexer(string): 
-  #keywords
-  prev_keyword = ""
-  string = string.strip()
-  print("Test input string: " + string)
-  temp = ""
-  output = "["
-  p = re.search("^if|^else|^int|^float",string)
-  if(p):
-    temp = keywords(p.group())
-    string = string.replace(p.group(),'',1)
-    string = string.strip()
-    output += temp + ", "
-    prev_keyword = p.group()
-  if(prev_keyword == "if"):
-    while string != "":
-      #seperators
-      p = re.search("^\(|^\)|^{|^}|^:|^“|^”|^;$",string)
-      if(p):
-        temp = seperators(p.group())
-        string = string.replace(p.group(),'',1)
-        string.strip()
-        output += temp + ", "
-      #Identifiers 
-      p = re.search("^[A-Za-z]+\d+|^[A-Za-z]+",string)
-      if(p):
-        temp = identifiers(p.group())
-        string = string.replace(p.group(),'',1)
-        string = string.strip()
-        output += temp + ", "
-      #operators
-      p = re.search("^[=+>*-]",string)
-      if(p):
-        temp = operators(p.group())
-        string = string.replace(p.group(),'',1)
-        string = string.strip()
-        output += temp + ", "
-      #literals
-      p = re.search("^\d+\.\d+|^\d+|^[A-za-z]+",string)
-      if(p):
-        temp = literals(p.group())
-        string = string.replace(p.group(),'',1)
-        string = string.strip()
-        output += temp + ", "
-  else:
-    while string != "":
-      #Identifiers 
-      p = re.search("^[A-Za-z]+\d+|^[A-Za-z]+",string)
-      if(p):
-        temp = identifiers(p.group())
-        string = string.replace(p.group(),'',1)
-        string = string.strip()
-        output += temp + ", "
-      #operators
-      p = re.search("^[=+>*-]",string)
-      if(p):
-        temp = operators(p.group())
-        string = string.replace(p.group(),'',1)
-        string = string.strip()
-        output += temp + ", "
-    #Identifiers 
-      p = re.search("^[A-Za-z]+\d+|^[A-Za-z]+",string)
-      if(p):
-        temp = identifiers(p.group())
-        string = string.replace(p.group(),'',1)
-        string = string.strip()
-        output += temp + ", "
-        
-      #seperators
-      p = re.search("^\(|^\)|^{|^}|^:|^“|^”|^;$",string)
-      if(p):
-        temp = seperators(p.group())
-        string = string.replace(p.group(),'',1)
-        string.strip()
-        output += temp + ", "
-      #literals
-      p = re.search("^\d+\.\d+|^\d+|^[A-za-z]+",string)
-      if(p):
-        temp = literals(p.group())
-        string = string.replace(p.group(),'',1)
-        string = string.strip()
-        output += temp + ", "
-      #p = re.search("^[A-Za-z]+|^[A-Za-z]+\d+",temp)
-      #if(p):
-        #identifiers(p.group())
-        #temp = temp.replace(p.group(),'')
-      
-  
-  output = output[:-2]
-  output += "]"
-  print("Output <type, token> list: " + output)
-  
