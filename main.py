@@ -116,7 +116,7 @@ def lexer(input_str):
   
   output = output[:-2]
   output += "]"
-  print("Output <type, token> list: " + output)
+  #print("Output <type, token> list: " + output)
   return output
   
 
