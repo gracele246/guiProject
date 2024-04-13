@@ -101,12 +101,26 @@ def lexer(input_str):
         input_str = input_str.strip()
         output += temp + ", "
         
-      #seperators
+      #separators
       p = re.search("^\(|^\)|^{|^}|^:|^“|^”|^;$",input_str)
       if(p):
         temp = seperators(p.group())
         input_str = input_str.replace(p.group(),'',1)
         input_str.strip()
+        output += temp + ", "
+        prev_keyword = p.group()
+
+      #Multi word strings
+      if prev_keyword == "“":
+        temp = ""
+        while input_str != "" and input_str[0:1] != "”":
+          p = re.search("^[A-za-z]+\d+|^\d+\.\d+|^\d+|^[A-za-z]+",input_str)
+          temp += p.group() + " "
+          input_str = input_str.replace(p.group(),'',1)
+          input_str = input_str.strip()
+        temp = temp[:-1]
+        print("CHECK: '" + temp + "'")
+        temp = literals(temp)
         output += temp + ", "
       #literals
       p = re.search("^\d+\.\d+|^\d+|^[A-za-z]+",input_str)
