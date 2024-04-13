@@ -63,6 +63,13 @@ def lexer(input_str):
         input_str = input_str.replace(p.group(),'',1)
         input_str = input_str.strip()
         output += temp + ", "
+      #Identifiers 
+      p = re.search("^[A-Za-z]+\d+",input_str)
+      if(p):
+        temp = identifiers(p.group())
+        input_str = input_str.replace(p.group(),'',1)
+        input_str = input_str.strip()
+        output += temp + ", "
       #literals
       p = re.search("^\d+\.\d+|^\d+|^[A-za-z]+",input_str)
       if(p):
