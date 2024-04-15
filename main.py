@@ -282,6 +282,8 @@ def clear():
   output = ""
   global input_list
   input_list = [""]
+  global parse_tree_output
+  parse_tree_output = ""
   secondString.configure(text = "Current Processing Line: " + str(line_number))
 
 #splits the lines in the textbox
