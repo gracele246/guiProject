@@ -148,7 +148,7 @@ root.title("User GUI")
 root.geometry('1000x1000')
 
 firstString = Label(root, text = "Source Code Input:")
-firstString.pack()
+firstString.grid(row=0)
 global line_number 
 line_number = 1
 global input_list 
@@ -180,7 +180,7 @@ def get_text():
   global input_list
   if line_number < len(input_list)+1 and input_list != [""]:
     secondString.configure(text = "Current Processing Line: " + str(line_number))
-    secondString.pack()
+    secondString.grid()
     global output
     lexer_input = input_list[line_number-1]
     output += lexer(lexer_input) + "\n"
@@ -197,31 +197,38 @@ def quit():
 
 #formatting
 my_text = Text(root , width=60, height=15,font = ("Arial", 16))
-my_text.pack(pady=20)
+my_text.grid(row = 1)
 
 secondString = Label(root, text = "Current Processing Line: " + str(line_number))
-secondString.pack() 
+secondString.grid(row = 2)
 
 button_frame = Frame(root)
-button_frame.pack()
+button_frame.grid()
 
 clear_button = Button(button_frame, text = "Clear Screen", command = clear)
-clear_button.grid(row = 0, column=0)
+clear_button.grid(row = 3, column=0)
 
 start_button = Button(button_frame, text = "Start", command = start)
-start_button.grid(row = 0, column=1, padx=20)
+start_button.grid(row = 3, column=1, padx=20)
 
 get_text_button = Button(button_frame, text = "Next Line", command = get_text)
-get_text_button.grid(row = 0, column=2, padx=20)
+get_text_button.grid(row = 3, column=2, padx=20)
 
 quit_button = Button(button_frame, text = "Quit", command = quit)
-quit_button.grid(row = 0, column = 3, padx = 20)
+quit_button.grid(row = 3, column = 3, padx = 20)
 
 thirdString = Label(root, text = "Source Code Output:")
-thirdString.pack(pady = 40)
+thirdString.grid(row = 0, column = 4)
 
 my_text2 = Text(root , width=60, height=15,font = ("Arial", 16))
-my_text2.pack()
+my_text2.grid(padx = 30, row = 1, column = 4)
 my_text2.config(state = "disabled")
+
+fourthString = Label(root, text = "Parse tree:")
+fourthString.grid(row = 0, column = 5)
+
+my_text3 = Text(root , width=60, height=15,font = ("Arial", 16))
+my_text3.grid(padx = 30, row = 1, column = 5)
+my_text3.config(state = "disabled")
 
 root.mainloop()
