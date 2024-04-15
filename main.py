@@ -64,7 +64,7 @@ def multi():
         elif(inToken[1] != "+" and inToken[1] != ";"):
             #print("error, you need * or + after the lit in the mult")
             parse_tree_output += "error, you need * or + after the lit in the mult" + "\n"
-def exp():
+def math_exp():
     #print("\n----parent node exp, finding children nodes:")
     global parse_tree_output
     parse_tree_output += "\n----parent node exp, finding children nodes:" + "\n"
@@ -78,7 +78,7 @@ def exp():
         accept_token()
     else:
         #print("expect int or float as the first element of the expression!\n")
-        parse_tree_output += "expect int or float as the first element of the expression!\n" +token + "\n"
+        parse_tree_output += "expect int, float, if, or print as the first element of the expression!\n" +token + "\n"
         return
     if(inToken[0]=="iden"):
         #print("child node (internal): identifier")
@@ -101,7 +101,83 @@ def exp():
     #print("child node (internal): math")
     parse_tree_output += "child node (internal): math" + "\n"
     math()
+def if_exp():
+    #print("\n----parent node exp, finding children nodes:")
+    global parse_tree_output
+    parse_tree_output += "\n----parent node exp, finding children nodes:" + "\n"
+    global inToken
+    typeT,token=inToken
+    if(token=="if"):
+      #print("child node (internal): KeyWord")
+      parse_tree_output += "child node (internal): identifier" + "\n"
+      #print(" KeyWord has child node (token): "+token)
+      parse_tree_output += "   identifier has child node (token): "+token + "\n"
+      accept_token()
+    else:
+      #print("expect int or float as the first element of the expression!\n")
+      parse_tree_output += "expect if as the first element of the expression!\n" +token + "\n"
+      return
+    if(inToken[1]=="("):
+        #print("child node (internal): operator")
+        parse_tree_output += "child node (internal): operator" + "\n"
+        #print(" operator has child node (token): "+inToken[1])
+        parse_tree_output += "   operator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect ( as the second element of the expression!")
+        parse_tree_output += "expect ( as the second element of the expression!" + "\n"
+        return
+    comparison_expr()
+    if(inToken[1] == ")"):
+        #print("child node (internal): operator")
+        parse_tree_output += "child node (internal): operator" + "\n"
+        #print(" operator has child node (token): "+inToken[1])
+        parse_tree_output += "   operator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect ) as the second element of the expression!")
+        parse_tree_output += "expect ) as the second element of the expression!" + "\n"
+        return
+    if(inToken[1] == ":"):
+        #print("child node (internal): separator")
+        parse_tree_output += "child node (internal): separator" + "\n"
+        #print(" operator has child node (token): "+inToken[1])
+        parse_tree_output += "   separator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+        #print("Parse Tree Complete!!!")
+        parse_tree_output += "Parse Tree Complete!!!" + "\n"
+        
+    else:
+        #print("expect : as the final element of the expression!")
+        parse_tree_output += "expect : as the final element of the expression!" + "\n"
+        return
+    
+def comparison_expr():
+    global parse_tree_output
+    global inToken
+    typeT,token=inToken
+    if(inToken[1] == ")"):
+       return
+    elif(inToken[0] == "iden"):
+        #print("child node (internal): identifier")
+        parse_tree_output += "child node (internal): identifier" + "\n"
+        #print(" operator has child node (token): "+inToken[1])
+        parse_tree_output += "   identifier has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    elif(inToken[1] == ">"):
+        #print("child node (internal): operator")
+        parse_tree_output += "child node (internal): operator" + "\n"
+        #print(" operator has child node (token): "+inToken[1])
+        parse_tree_output += "   operator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect > as the second element of the expression!")
+        parse_tree_output += "expect > as the second element of the expression!" + "\n"
+        return
+    comparison_expr()
 
+def print_exp():
+   return
 testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+BBB2     *  	BBB2", "if(cresult 	>10):", "print(“TinyPie”)"]
 Mytokens = []
 def keywords(input_str):
@@ -313,7 +389,12 @@ def get_text():
     global inToken
     inToken=Mytokens.pop(0)
     print(Mytokens)
-    exp()
+    if(inToken[1] == "int" or inToken[1] == "float"):
+      math_exp()
+    elif(inToken[1] == "if"):
+      if_exp()
+    elif(inToken[1] == "print"):
+      print_exp()
     global parse_tree_output
     my_text3.config(state = "normal")
     my_text3.delete(1.0, END)
@@ -335,16 +416,16 @@ button_frame = Frame(root)
 button_frame.grid()
 
 clear_button = Button(button_frame, text = "Clear Screen", command = clear)
-clear_button.grid(row = 3, column=0)
+clear_button.grid(row = 1, column=0, )
 
 start_button = Button(button_frame, text = "Start", command = start)
-start_button.grid(row = 3, column=1, padx=20)
+start_button.grid(row = 1, column=1, padx=20)
 
 get_text_button = Button(button_frame, text = "Next Line", command = get_text)
-get_text_button.grid(row = 3, column=2, padx=20)
+get_text_button.grid(row = 1, column=2, padx=20)
 
 quit_button = Button(button_frame, text = "Quit", command = quit)
-quit_button.grid(row = 3, column = 3, padx = 20)
+quit_button.grid(row = 1, column = 3, padx = 20)
 
 thirdString = Label(root, text = "Source Code Output:")
 thirdString.grid(row = 0, column = 4)
@@ -354,10 +435,10 @@ my_text2.grid(padx = 30, row = 1, column = 4)
 my_text2.config(state = "disabled")
 
 fourthString = Label(root, text = "Parse tree:")
-fourthString.grid(row = 0, column = 5)
+fourthString.grid(row = 2, column = 4)
 
 my_text3 = Text(root , width=60, height=15,font = ("Arial", 16))
-my_text3.grid(padx = 30, row = 1, column = 5)
+my_text3.grid(padx = 30, row = 3, column = 4)
 my_text3.config(state = "disabled")
 
 root.mainloop()
