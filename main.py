@@ -67,6 +67,8 @@ def multi():
 def math_exp():
     #print("\n----parent node exp, finding children nodes:")
     global parse_tree_output
+    global line_number
+    parse_tree_output += "\n####Parse tree for line" +  str(line_number-1) + "####" + "\n"
     parse_tree_output += "\n----parent node exp, finding children nodes:" + "\n"
     global inToken
     typeT,token=inToken
@@ -104,6 +106,8 @@ def math_exp():
 def if_exp():
     #print("\n----parent node exp, finding children nodes:")
     global parse_tree_output
+    global line_number
+    parse_tree_output += "\n####Parse tree for line" +  str(line_number-1) + "####" + "\n"
     parse_tree_output += "\n----parent node exp, finding children nodes:" + "\n"
     global inToken
     typeT,token=inToken
@@ -177,7 +181,77 @@ def comparison_expr():
     comparison_expr()
 
 def print_exp():
-   return
+    #print("\n----parent node exp, finding children nodes:")
+    global parse_tree_output
+    global line_number
+    parse_tree_output += "\n####Parse tree for line" +  str(line_number-1) + "####" + "\n"
+    parse_tree_output += "\n----parent node exp, finding children nodes:" + "\n"
+    global inToken
+    typeT,token=inToken
+    if(token=="print"):
+      #print("child node (internal): identifier")
+      parse_tree_output += "child node (internal): identifier" + "\n"
+      #print(" KeyWord has child node (token): "+token)
+      parse_tree_output += "   identifier has child node (token): "+token + "\n"
+      accept_token()
+    else:
+      #print("expect print as the first element of the expression!\n")
+      parse_tree_output += "expect print as the first element of the expression!\n" +token + "\n"
+      return
+    if(inToken[1]=="("):
+        #print("child node (internal): operator")
+        parse_tree_output += "child node (internal): operator" + "\n"
+        #print(" operator has child node (token): "+inToken[1])
+        parse_tree_output += "   operator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect ( as the second element of the expression!")
+        parse_tree_output += "expect ( as the second element of the expression!" + "\n"
+        return
+    if(inToken[1]=="“"):
+        #print("child node (internal): separator")
+        parse_tree_output += "child node (internal): separator" + "\n"
+        #print(" separator has child node (token): "+inToken[1])
+        parse_tree_output += "   separator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect “ as the third element of the expression!")
+        parse_tree_output += "expect “ as the third element of the expression!" + "\n"
+        return 
+    if(inToken[0]=="lit"):
+        #print("child node (internal): literal")
+        parse_tree_output += "child node (internal): literal" + "\n"
+        #print(" literal has child node (token): "+inToken[1])
+        parse_tree_output += "   literal has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect literal after quotes!")
+        parse_tree_output += "expect literal after quotes!" + "\n"
+        return 
+    if(inToken[1]=="”"):
+        #print("child node (internal): separator")
+        parse_tree_output += "child node (internal): separator" + "\n"
+        #print(" separator has child node (token): "+inToken[1])
+        parse_tree_output += "   separator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect “ after string in expression!")
+        parse_tree_output += "expect “ after string in expression!" + "\n"
+        return
+    if(inToken[1] == ")"):
+        #print("child node (internal): operator")
+        parse_tree_output += "child node (internal): operator" + "\n"
+        #print(" operator has child node (token): "+inToken[1])
+        parse_tree_output += "   operator has child node (token): "+inToken[1] + "\n"
+        accept_token()
+    else:
+        #print("expect ) as the second element of the expression!")
+        parse_tree_output += "expect ) as the second element of the expression!" + "\n"
+        return
+    if(len(inToken)) == 0:
+        parse_tree_output += "Parse Tree Complete!!!" + "\n"
+        return
+
 testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+BBB2     *  	BBB2", "if(cresult 	>10):", "print(“TinyPie”)"]
 Mytokens = []
 def keywords(input_str):
@@ -383,19 +457,17 @@ def get_text():
     my_text2.delete(1.0, END)
     my_text2.insert('end',output)
     my_text2.config(state = "disabled")
+    
     global Mytokens
-    print(Mytokens)
-
     global inToken
+    global parse_tree_output
     inToken=Mytokens.pop(0)
-    print(Mytokens)
     if(inToken[1] == "int" or inToken[1] == "float"):
       math_exp()
     elif(inToken[1] == "if"):
       if_exp()
     elif(inToken[1] == "print"):
       print_exp()
-    global parse_tree_output
     my_text3.config(state = "normal")
     my_text3.delete(1.0, END)
     my_text3.insert('end',parse_tree_output)
