@@ -49,7 +49,7 @@ def multi():
         parse_tree_output += "child node (internal): literal" + "\n"
         parse_tree_output += "   literal has child node (token):"+inToken[1] + "\n"
         accept_token()
-        if(inToken[0] == ""):
+        if(inToken[0] == "" or len(inToken) == 0):
           return
         if(inToken[1]=="*"):
             #print("child node (token):"+inToken[1])
@@ -58,10 +58,7 @@ def multi():
             #print("child node (internal): multi")
             parse_tree_output += "child node (internal): multi" + "\n"
             multi()
-        elif(len(Mytokens) == 0):
-            #print("Parse Tree Complete!!!")
-            parse_tree_output += "Parse Tree Complete!!!" + "\n"
-        elif(inToken[1] != "+" and inToken[1] != ";"):
+        elif(len(inToken) > 0 and inToken[1] != "+" and inToken[1] != ";"):
             #print("error, you need * or + after the lit in the mult")
             parse_tree_output += "error, you need * or + after the lit in the mult" + "\n"
 def math_exp():
@@ -103,6 +100,12 @@ def math_exp():
     #print("child node (internal): math")
     parse_tree_output += "child node (internal): math" + "\n"
     math()
+    if(inToken[1] == ";"):
+      parse_tree_output += "Parent Node exp, child node (token): " + inToken[1] + "\n"
+      accept_token()
+      parse_tree_output += "Parse Tree Complete!!!" + "\n"
+    else:
+      parse_tree_output += "Error, expect ; as the last element of the expression" + "\n"
 def if_exp():
     #print("\n----parent node exp, finding children nodes:")
     global parse_tree_output
@@ -248,9 +251,13 @@ def print_exp():
         #print("expect ) as the second element of the expression!")
         parse_tree_output += "expect ) as the second element of the expression!" + "\n"
         return
-    if(len(inToken) == 0):
-        parse_tree_output += "Parse Tree Complete!!!" + "\n"
-        return
+    if(inToken[1] == ";"):
+        parse_tree_output += "child node (token): " + inToken[1] + "\n"
+        accept_token()
+    parse_tree_output += "Parse Tree Complete!!!" + "\n"
+    return
+
+  
 def parser():
     global Mytokens
     global inToken
