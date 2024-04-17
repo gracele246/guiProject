@@ -248,10 +248,21 @@ def print_exp():
         #print("expect ) as the second element of the expression!")
         parse_tree_output += "expect ) as the second element of the expression!" + "\n"
         return
-    if(len(inToken)) == 0:
+    if(len(inToken) == 0):
         parse_tree_output += "Parse Tree Complete!!!" + "\n"
         return
-
+def parser():
+    global Mytokens
+    global inToken
+    global parse_tree_output
+    inToken=Mytokens.pop(0)
+    if(inToken[1] == "int" or inToken[1] == "float"):
+      math_exp()
+    elif(inToken[1] == "if"):
+      if_exp()
+    elif(inToken[1] == "print"):
+      print_exp()
+    return
 testStrings = ["int A1 = 5;", "float BBB2 = 1034.2","float 	cresult     = 	A1 	+BBB2     *  	BBB2", "if(cresult 	>10):", "print(“TinyPie”)"]
 Mytokens = []
 def keywords(input_str):
@@ -461,13 +472,7 @@ def get_text():
     global Mytokens
     global inToken
     global parse_tree_output
-    inToken=Mytokens.pop(0)
-    if(inToken[1] == "int" or inToken[1] == "float"):
-      math_exp()
-    elif(inToken[1] == "if"):
-      if_exp()
-    elif(inToken[1] == "print"):
-      print_exp()
+    parser()
     my_text3.config(state = "normal")
     my_text3.delete(1.0, END)
     my_text3.insert('end',parse_tree_output)
